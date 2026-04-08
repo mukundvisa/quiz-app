@@ -1,7 +1,7 @@
 import { X, Clock } from "lucide-react";
 import { useState, useEffect } from "react";
 
-export default function TimerModel({ setShowTimerModel, setShowModal, selectedMode }) {
+export default function TimerModel({ setShowTimerModel, setShowModal, selectedMode, onStart }) {
     const [isTimerEnabled, setIsTimerEnabled] = useState(true);
 
     // Lock timer for Test mode
@@ -16,6 +16,11 @@ export default function TimerModel({ setShowTimerModel, setShowModal, selectedMo
     const handleBack = () => {
         setShowTimerModel(false);
         setShowModal(true);
+    };
+
+    const handleStart = () => {
+        setShowTimerModel(false);
+        onStart(isTimerEnabled);
     };
 
     return (
@@ -73,6 +78,7 @@ export default function TimerModel({ setShowTimerModel, setShowModal, selectedMo
                             Back
                         </button>
                         <button
+                            onClick={handleStart}
                             className="flex-1 py-2 px-6 bg-black text-white rounded-xl font-bold hover:bg-gray-900 transition-all duration-200 shadow-lg shadow-black/10 active:scale-[0.98]"
                         >
                             Start
@@ -82,4 +88,4 @@ export default function TimerModel({ setShowTimerModel, setShowModal, selectedMo
             </div>
         </div>
     );
-}
+}
