@@ -1,22 +1,22 @@
 import { useState, useRef, useEffect } from "react";
-import { Clock, RotateCcw, LogOut, CheckCircle2 } from "lucide-react";
+import { Clock, RotateCcw, LogOut, CheckCircle2, Search, X } from "lucide-react";
 
 const QUESTIONS = [
-  { id: 1, question: "What is React?", options: ["A JS Library", "A CSS Framework", "A Database", "An OS"], answer: "A JS Library" },
-  { id: 2, question: "What is JSX?", options: ["JavaScript XML", "JSON XML", "Java Syntax", "Scripting Lang"], answer: "JavaScript XML" },
-  { id: 3, question: "Which hook is used for state?", options: ["useEffect", "useState", "useContext", "useMemo"], answer: "useState" },
-  { id: 4, question: "How to pass data to children?", options: ["Via State", "Via Props", "Via Refs", "Via Keys"], answer: "Via Props" },
-  { id: 5, question: "What is the virtual DOM?", options: ["A game", "A copy of the real DOM", "A browser tool", "A database"], answer: "A copy of the real DOM" },
-  { id: 6, question: "React component names must start with?", options: ["Lowercase", "Uppercase", "Numbers", "Symbols"], answer: "Uppercase" },
-  { id: 7, question: "What is a React Fragment?", options: ["A broken part", "A grouping tool", "A hook", "A style"], answer: "A grouping tool" },
-  { id: 8, question: "Which Hook handles side effects?", options: ["useState", "useEffect", "useCallback", "useRef"], answer: "useEffect" },
-  { id: 9, question: "Initial value in useState is?", options: ["Required", "Optional", "Always 0", "Always string"], answer: "Optional" },
-  { id: 10, question: "Redux is for?", options: ["Styling", "Global State", "Database", "Routing"], answer: "Global State" },
-  { id: 11, question: "Vite is a?", options: ["Browser", "Build tool", "Text editor", "Package manager"], answer: "Build tool" },
-  { id: 12, question: "Tailwind is a?", options: ["JS Library", "CSS Framework", "Database", "Cloud provider"], answer: "CSS Framework" },
-  { id: 13, question: "Node.js runs on?", options: ["Python", "V8 Engine", "Java VM", "PHP"], answer: "V8 Engine" },
-  { id: 14, question: "npm stands for?", options: ["Node Personal Mgr", "Node Package Mgr", "New Package Mgr", "Network Mgr"], answer: "Node Package Mgr" },
-  { id: 15, question: "React was created by?", options: ["Google", "Facebook", "Microsoft", "Twitter"], answer: "Facebook" }
+  { id: 1, question: "What is React?", options: ["A JS Library", "A CSS Framework", "A Database", "An OS"], answer: "A JS Library", explanation: "React is an open-source JavaScript library for building user interfaces, particularly for single-page applications. It's used for handling the view layer for web and mobile apps." },
+  { id: 2, question: "What is JSX?", options: ["JavaScript XML", "JSON XML", "Java Syntax", "Scripting Lang"], answer: "JavaScript XML", explanation: "JSX stands for JavaScript XML. It allows us to write HTML in React and makes it easier to write and add HTML in React." },
+  { id: 3, question: "Which hook is used for state?", options: ["useEffect", "useState", "useContext", "useMemo"], answer: "useState", explanation: "useState is a Hook that allows you to add React state to function components. It returns a stateful value and a function to update it." },
+  { id: 4, question: "How to pass data to children?", options: ["Via State", "Via Props", "Via Refs", "Via Keys"], answer: "Via Props", explanation: "Props (short for properties) are used to pass data from a parent component to its children. They are read-only and help make components reusable." },
+  { id: 5, question: "What is the virtual DOM?", options: ["A game", "A copy of the real DOM", "A browser tool", "A database"], answer: "A copy of the real DOM", explanation: "The virtual DOM (VDOM) is a programming concept where an ideal, or 'virtual', representation of a UI is kept in memory and synced with the 'real' DOM by a library such as ReactDOM." },
+  { id: 6, question: "React component names must start with?", options: ["Lowercase", "Uppercase", "Numbers", "Symbols"], answer: "Uppercase", explanation: "React components must always begin with an uppercase letter. If a component starts with a lowercase letter, React will treat it as a built-in DOM element like <div> or <span> instead of a custom component." },
+  { id: 7, question: "What is a React Fragment?", options: ["A broken part", "A grouping tool", "A hook", "A style"], answer: "A grouping tool", explanation: "React Fragments let you group a list of children without adding extra nodes to the DOM. It's often used when you need to return multiple elements from a component." },
+  { id: 8, question: "Which Hook handles side effects?", options: ["useState", "useEffect", "useCallback", "useRef"], answer: "useEffect", explanation: "The useEffect Hook lets you perform side effects in function components, such as data fetching, setting up a subscription, or manually changing the DOM." },
+  { id: 9, question: "Initial value in useState is?", options: ["Required", "Optional", "Always 0", "Always string"], answer: "Optional", explanation: "The initial state argument in useState is only used during the first render. It's optional, and if you don't provide it, the state will be undefined." },
+  { id: 10, question: "Redux is for?", options: ["Styling", "Global State", "Database", "Routing"], answer: "Global State", explanation: "Redux is a pattern and library for managing and updating application state, using events called 'actions'. It serves as a centralized store for state that needs to be used across your entire application." },
+  { id: 11, question: "Vite is a?", options: ["Browser", "Build tool", "Text editor", "Package manager"], answer: "Build tool", explanation: "Vite is a modern frontend build tool that significantly improves the frontend development experience. It consists of two major parts: a dev server that provides rich feature enhancements over native ES modules, and a build command that bundles your code with Rollup." },
+  { id: 12, question: "Tailwind is a?", options: ["JS Library", "CSS Framework", "Database", "Cloud provider"], answer: "CSS Framework", explanation: "Tailwind CSS is an open-source CSS framework. Unlike other frameworks like Bootstrap, it does not provide a series of predefined classes for elements such as buttons or tables, but instead provides utility classes to style them directly." },
+  { id: 13, question: "Node.js runs on?", options: ["Python", "V8 Engine", "Java VM", "PHP"], answer: "V8 Engine", explanation: "Node.js is an open-source, cross-platform, JavaScript runtime environment that executes JavaScript code outside a web browser. It uses the V8 JavaScript engine, the same engine that powers Google Chrome." },
+  { id: 14, question: "npm stands for?", options: ["Node Personal Mgr", "Node Package Mgr", "New Package Mgr", "Network Mgr"], answer: "Node Package Mgr", explanation: "npm is a package manager for the JavaScript programming language. It is the default package manager for the JavaScript runtime environment Node.js." },
+  { id: 15, question: "React was created by?", options: ["Google", "Facebook", "Microsoft", "Twitter"], answer: "Facebook", explanation: "React was created by Jordan Walke, a software engineer at Facebook (now Meta). It was first deployed on Facebook's News Feed in 2011 and later on Instagram in 2012." }
 ];
 
 export default function Instructions({ onExit, selectedMode, isTimerEnabled }) {
@@ -27,6 +27,7 @@ export default function Instructions({ onExit, selectedMode, isTimerEnabled }) {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [timeLeft, setTimeLeft] = useState(300);
   const [timeSpent, setTimeSpent] = useState(0);
+  const [showExplanation, setShowExplanation] = useState(null);
 
   const questionRefs = useRef([]);
 
@@ -95,6 +96,11 @@ export default function Instructions({ onExit, selectedMode, isTimerEnabled }) {
 
   const formatTime = (s) => `${Math.floor(s / 60)}:${(s % 60).toString().padStart(2, "0")}`;
 
+  const formatTimeSpent = (s) => {
+    if (s < 60) return `${s}s`;
+    return `${(s / 60).toFixed(2)}m`;
+  };
+
   if (isSubmitted) {
     const score = calculateScore();
     return (
@@ -107,7 +113,7 @@ export default function Instructions({ onExit, selectedMode, isTimerEnabled }) {
           <div className="flex items-center gap-8">
             <div className="flex flex-col items-end border-r border-white/20 pr-8">
               <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest leading-none">Time Taken</span>
-              <span className="text-2xl font-black">{formatTime(timeSpent)}</span>
+              <span className="text-2xl font-black">{formatTimeSpent(timeSpent)}</span>
             </div>
             <div className="flex flex-col items-end">
               <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest leading-none">Final Score</span>
@@ -300,11 +306,20 @@ export default function Instructions({ onExit, selectedMode, isTimerEnabled }) {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {isConfirmed ? (
-                  <div className="p-4 rounded-xl border-2 border-black bg-gray-50 font-bold text-black animate-in fade-in slide-in-from-left-2 duration-300 flex items-center gap-3">
-                    <span className="text-gray-400 text-xs">
-                      {optionLabels[q.options.indexOf(selectedAnswer)]}.
-                    </span>
-                    {selectedAnswer}
+                  <div className="p-4 rounded-xl border-2 border-black bg-gray-50 font-bold text-black animate-in fade-in slide-in-from-left-2 duration-300 flex items-center justify-between group">
+                    <div className="flex items-center gap-3">
+                      <span className="text-gray-400 text-xs">
+                        {optionLabels[q.options.indexOf(selectedAnswer)]}.
+                      </span>
+                      {selectedAnswer}
+                    </div>
+                    <button
+                      onClick={() => setShowExplanation({ q, userAnswer: selectedAnswer })}
+                      className="p-1.5 hover:bg-black hover:text-white rounded-lg transition-all text-gray-400"
+                      title="View explanation"
+                    >
+                      <Search size={16} />
+                    </button>
                   </div>
                 ) : (
                   q.options.map((opt, optIdx) => (
@@ -323,7 +338,7 @@ export default function Instructions({ onExit, selectedMode, isTimerEnabled }) {
               </div>
 
               {!isConfirmed && answers[idx] && (
-                <div className="mt-3 flex justify-end animate-in fade-in slide-in-from-top-2 duration-300">
+                <div className="mt-3 flex justify-end items-center gap-3 animate-in fade-in slide-in-from-top-2 duration-300">
                   <button
                     onClick={() => handleContinue(idx)}
                     className="bg-black text-white px-6 py-2 rounded-lg font-bold hover:bg-gray-800 transition-all active:scale-95"
@@ -344,6 +359,67 @@ export default function Instructions({ onExit, selectedMode, isTimerEnabled }) {
             >
               SUBMIT QUIZ
             </button>
+          </div>
+        )}
+
+        {/* Google Themed Explanation Modal */}
+        {showExplanation && (
+          <div className="fixed inset-0 bg-white/80 backdrop-blur-md z-[100] flex items-center justify-center p-4">
+            <div className="bg-white w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden border border-gray-100 animate-in zoom-in duration-300">
+              <div className="px-6 pt-4 flex justify-end items-center">
+                <button
+                  onClick={() => setShowExplanation(null)}
+                  className="p-2 hover:bg-gray-200 rounded-full transition-colors text-gray-500"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+
+              <div className="px-8 py-6 space-y-6">
+                <div>
+                  <h4 className="text-left text-black text-xl font-medium mb-4">
+                    {showExplanation.q.question}
+                  </h4>
+
+                  <div className="space-y-6">
+                    <div className="grid grid-cols-2 gap-4">
+                      {showExplanation.q.options.map((opt, i) => {
+                        const isCorrect = opt === showExplanation.q.answer;
+                        const isUserAnswer = opt === showExplanation.userAnswer;
+
+                        let cardClass = "bg-gray-50 border-gray-100 text-gray-400";
+                        if (isCorrect) {
+                          cardClass = "bg-green-50 border-green-200 text-green-700 font-bold";
+                        } else if (isUserAnswer) {
+                          cardClass = "bg-red-50 border-red-200 text-red-700 font-bold";
+                        }
+
+                        return (
+                          <div
+                            key={i}
+                            className={`p-3 rounded-lg border text-sm flex items-center gap-2 transition-all ${cardClass}`}
+                          >
+                            <span className="w-5 h-5 rounded bg-white flex items-center justify-center border border-inherit text-[10px]">
+                              {optionLabels[i]}
+                            </span>
+                            {opt}
+                            {isCorrect && <CheckCircle2 size={14} className="ml-auto text-green-600" />}
+                            {isUserAnswer && !isCorrect && <X size={14} className="ml-auto text-red-600" />}
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    <div className="bg-blue-50/50 p-6 rounded-2xl border border-blue-100 animate-in slide-in-from-bottom-2 duration-500">
+                      <h5 className="text-[10px] font-bold uppercase tracking-widest text-blue-600 mb-2">Expert Explanation</h5>
+                      <p className="text-gray-700 leading-relaxed italic">
+                        "{showExplanation.q.explanation}"
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         )}
       </div>

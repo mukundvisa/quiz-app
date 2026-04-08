@@ -48,7 +48,7 @@ export default function TimerModel({ setShowTimerModel, setShowModal, selectedMo
                         </p>
                         {isTimerEnabled && (
                             <p className="text-sm text-muted-foreground">
-                                Duration: 30 minutes
+                                Duration: 5 minutes
                             </p>
                         )}
                     </div>
@@ -88,4 +88,4 @@ export default function TimerModel({ setShowTimerModel, setShowModal, selectedMo
             </div>
         </div>
     );
-}
+}
