@@ -10,8 +10,8 @@ export default function ModeModal({ setShowModal, setShowTimerModel, setSelected
     }
 
     return (
-        <div className="fixed inset-0 bg-black/20 flex items-center justify-center z-50">
-            <div className="bg-white w-[420px] rounded-xl shadow-lg p-6 relative">
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4 backdrop-blur-sm">
+            <div className="bg-white w-full max-w-[420px] rounded-2xl shadow-2xl p-6 relative animate-in fade-in zoom-in duration-300">
                 <button
                     onClick={() => setShowModal(false)}
                     className="absolute top-4 right-4 text-gray-500 hover:text-black"
